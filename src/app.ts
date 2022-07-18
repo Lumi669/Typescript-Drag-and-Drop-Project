@@ -1,16 +1,29 @@
 class ProjectInput {
   templateElement: HTMLTemplateElement;
-  hoseElement: HTMLDivElement;
+  hostElement: HTMLDivElement;
+  element: HTMLFormElement;
 
   constructor() {
     this.templateElement = document.getElementById(
       "project-input"
     )! as HTMLTemplateElement;
-    this.hoseElement = document.getElementById("app")! as HTMLDivElement;
+
+    this.hostElement = document.getElementById("app")! as HTMLDivElement;
 
     const importedNode = document.importNode(
       this.templateElement.content,
       true
     );
+
+    //get the concrete element out of the template content
+    this.element = importedNode.firstElementChild as HTMLFormElement;
+
+    this.attach();
+  }
+  private attach() {
+    this.hostElement.insertAdjacentElement("afterbegin", this.element);
   }
 }
+
+// create an instance, now in UI form shows
+const prjInput = new ProjectInput();
