@@ -33,7 +33,8 @@ class ProjectInput {
     }
 
     private configure() {
-        this.element.addEventListener("submit", this.submitHandler);
+        //use "this" instead of "ProjectInput" for the bind argument !!!
+        this.element.addEventListener("submit", this.submitHandler.bind(this));
     }
 
     private attach() {

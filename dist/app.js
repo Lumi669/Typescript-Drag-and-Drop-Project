@@ -17,7 +17,7 @@ class ProjectInput {
         console.log("form submitted = ", this.titleInputElement.value);
     }
     configure() {
-        this.element.addEventListener("submit", this.submitHandler);
+        this.element.addEventListener("submit", this.submitHandler.bind(this));
     }
     attach() {
         this.hostElement.insertAdjacentElement("afterbegin", this.element);
