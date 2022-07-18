@@ -18,6 +18,9 @@ class ProjectInput {
     //get the concrete element out of the template content
     this.element = importedNode.firstElementChild as HTMLFormElement;
 
+    // add an id
+    this.element.id = "user-input";
+
     this.attach();
   }
   private attach() {
