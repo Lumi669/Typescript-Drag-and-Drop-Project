@@ -77,11 +77,23 @@ class ProjectInput {
         const enteredDescription = this.descriptionInputElement.value;
         const enteredPeople = this.peopleInputElement.value;
 
-        if (
-            validate({ value: enteredTitle, required: true, minLength: 5 }) &&
-            validate({ value: enteredDescription, required: true, minLength: 5 }) &&
-            validate({ value: enteredPeople, required: true, minLength: 5 })
-        ) {
+        const tiltleValidatable: Validatable = {
+            value: enteredTitle,
+            required: true
+        };
+        const descriptionValidatable: Validatable = {
+            value: enteredDescription,
+            required: true,
+            minLength: 5
+        };
+        const peopleValidatable: Validatable = {
+            value: +enteredPeople,
+            required: true,
+            min: 1,
+            max: 5
+        };
+
+        if (!validate(tiltleValidatable) || !validate(descriptionValidatable) || !validate(peopleValidatable)) {
             alert("Invalid input!");
             return;
         } else {
