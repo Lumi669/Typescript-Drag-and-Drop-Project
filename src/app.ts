@@ -1,7 +1,5 @@
 //autobind decorator
-function Autobind(target: any, name: string, descriptor: PropertyDescriptor) {
-    console.log("target = ", target);
-    console.log("name = ", name);
+function Autobind(_: any, _2: string, descriptor: PropertyDescriptor) {
     console.log("descriptor = ", descriptor);
     const originalMethod = descriptor.value;
     const adjustDescriptor: PropertyDescriptor = {
