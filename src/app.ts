@@ -17,7 +17,6 @@ class ProjectState {
 
     addListener(listenerFn: Function) {
         this.listeners.push(listenerFn);
-        console.log("this.listeners = ", this.listeners);
     }
 
     addProject(title: string, description: string, numOfPeople: number) {
@@ -30,13 +29,10 @@ class ProjectState {
         console.log("newProject = ", newProject);
 
         this.projects.push(newProject);
-        console.log("this.project = ", this.projects);
 
         //the magic happen here, when new project come, every listener
         //will be called with argument of projects, so update e.g assignedProjects
         for (const listenerFn of this.listeners) {
-            console.log("stat projects = ", this.projects);
-
             listenerFn(this.projects.slice());
         }
     }
@@ -112,11 +108,7 @@ class ProjectList {
         this.element.id = `${this.type}-projects`;
 
         projectState.addListener((projects: any[]) => {
-            console.log("projects from ... = ", projects);
-
             this.assignedProjects = projects;
-            console.log("this. assignedProjects from ... = ", this.assignedProjects);
-
             this.renderProjects();
         });
         this.attach();
@@ -127,11 +119,8 @@ class ProjectList {
         console.log("this.assignedProjects = ", this.assignedProjects);
         console.log("renderProject is called ...");
         const listEl = document.getElementById(`${this.type}-projects-list`)! as HTMLUListElement;
-        console.log("listEl = ", listEl);
 
         for (const prjItem of this.assignedProjects) {
-            console.log("for loop ...");
-            console.log("this.assignedProjects = ", this.assignedProjects);
             const listItem = document.createElement("Li");
             listItem.textContent = prjItem.title;
             listEl.appendChild(listItem);
@@ -139,8 +128,6 @@ class ProjectList {
     }
 
     private renderContent() {
-        console.log("renderContent is called ...");
-
         const listId = `${this.type}-projects-list`;
         this.element.querySelector("ul")!.id = listId;
         this.element.querySelector("h2")!.textContent = this.type.toUpperCase() + " PROJECTS";
