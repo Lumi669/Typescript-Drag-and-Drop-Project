@@ -142,10 +142,8 @@ class ProjectList {
     }
 
     private renderProjects() {
-        console.log("this.assignedProjects = ", this.assignedProjects);
-        console.log("renderProject is called ...");
         const listEl = document.getElementById(`${this.type}-projects-list`)! as HTMLUListElement;
-
+        listEl.innerHTML = "";
         for (const prjItem of this.assignedProjects) {
             const listItem = document.createElement("Li");
             listItem.textContent = prjItem.title;
