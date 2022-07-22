@@ -108,12 +108,17 @@ function Autobind(_: any, _2: string, descriptor: PropertyDescriptor) {
 }
 
 //create a base class with common functionalities
-class Component<T extends HTMLElement, U extends HTMLElement> {
+abstract class Component<T extends HTMLElement, U extends HTMLElement> {
     templateElement: HTMLTemplateElement;
     hostElement: T;
     element: U; // there is no HTMLSectionElement, so use HTMLElement
 
-    constructor(templateId: string, hostElementId: string, newElementId?: string) {
+    constructor(
+        templateId: string,
+        hostElementId: string,
+        insertAtStart: boolean,
+        newElementId?: string
+    ) {
         this.templateElement = document.getElementById(templateId)! as HTMLTemplateElement;
         this.hostElement = document.getElementById(hostElementId)! as T;
         const importedNode = document.importNode(this.templateElement.content, true);
@@ -124,6 +129,13 @@ class Component<T extends HTMLElement, U extends HTMLElement> {
         if (newElementId) {
             this.element.id = `${newElementId}-projects`;
         }
+        this.attach(insertAtStart);
+    }
+    private attach(insertAtBeginning: boolean) {
+        this.hostElement.insertAdjacentElement(
+            insertAtBeginning ? "afterbegin" : "beforeend",
+            this.element
+        );
     }
 }
 

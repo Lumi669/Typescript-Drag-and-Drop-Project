@@ -76,7 +76,7 @@ function Autobind(_, _2, descriptor) {
     return adjustDescriptor;
 }
 class Component {
-    constructor(templateId, hostElementId, newElementId) {
+    constructor(templateId, hostElementId, insertAtStart, newElementId) {
         this.templateElement = document.getElementById(templateId);
         this.hostElement = document.getElementById(hostElementId);
         const importedNode = document.importNode(this.templateElement.content, true);
@@ -84,6 +84,10 @@ class Component {
         if (newElementId) {
             this.element.id = `${newElementId}-projects`;
         }
+        this.attach(insertAtStart);
+    }
+    attach(insertAtBeginning) {
+        this.hostElement.insertAdjacentElement(insertAtBeginning ? "afterbegin" : "beforeend", this.element);
     }
 }
 class ProjectList {
