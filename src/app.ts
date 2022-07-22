@@ -139,40 +139,17 @@ abstract class Component<T extends HTMLElement, U extends HTMLElement> {
     }
 
     abstract configure(): void;
-    abstract renderProject(): void;
+    abstract renderContent(): void;
 }
 
 // ProjectList Class
-class ProjectList {
-    templateElement: HTMLTemplateElement;
-    hostElement: HTMLDivElement;
-    element: HTMLElement; // there is no HTMLSectionElement, so use HTMLElement
+class ProjectList extends Component<HTMLTemplateElement, HTMLElement> {
     assignedProjects: Project[];
 
     constructor(private type: "active" | "finished") {
-        this.templateElement = document.getElementById("project-list")! as HTMLTemplateElement;
-        this.hostElement = document.getElementById("app")! as HTMLDivElement;
+        super("project-list", "app", false, `${type}-projects`);
         this.assignedProjects = [];
-
-        const importedNode = document.importNode(this.templateElement.content, true);
-
-        //get the concrete element out of the template content
-        this.element = importedNode.firstElementChild as HTMLElement;
-        // add an id
-        this.element.id = `${this.type}-projects`;
-
-        projectState.addListener((projects: Project[]) => {
-            const relevantProjects = projects.filter(prj => {
-                if (this.type === "active") {
-                    return prj.status === ProjectStatus.Active;
-                }
-                return prj.status === ProjectStatus.Finished;
-            });
-
-            this.assignedProjects = relevantProjects;
-            this.renderProjects();
-        });
-        this.attach();
+        this.configure();
         this.renderContent();
     }
 
@@ -186,14 +163,24 @@ class ProjectList {
         }
     }
 
-    private renderContent() {
+    configure() {
+        projectState.addListener((projects: Project[]) => {
+            const relevantProjects = projects.filter(prj => {
+                if (this.type === "active") {
+                    return prj.status === ProjectStatus.Active;
+                }
+                return prj.status === ProjectStatus.Finished;
+            });
+
+            this.assignedProjects = relevantProjects;
+            this.renderProjects();
+        });
+    }
+
+    renderContent() {
         const listId = `${this.type}-projects-list`;
         this.element.querySelector("ul")!.id = listId;
         this.element.querySelector("h2")!.textContent = this.type.toUpperCase() + " PROJECTS";
-    }
-
-    private attach() {
-        this.hostElement.insertAdjacentElement("beforeend", this.element);
     }
 }
 
