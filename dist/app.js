@@ -41,7 +41,6 @@ class ProjectState extends State {
     }
     addProject(title, description, numOfPeople) {
         const newProject = new Project(Math.random().toString(), title, description, numOfPeople, ProjectStatus.Active);
-        console.log("newProject = ", newProject);
         this.projects.push(newProject);
         for (const listenerFn of this.listeners) {
             listenerFn(this.projects.slice());
@@ -86,7 +85,6 @@ class Component {
         this.hostElement = document.getElementById(hostElementId);
         const importedNode = document.importNode(this.templateElement.content, true);
         this.element = importedNode.firstElementChild;
-        console.log("app = ", this.element);
         if (newElementId) {
             console.log("newElementId = ", newElementId);
             console.log("apple");
@@ -108,7 +106,8 @@ class ProjectItem extends Component {
     configure() { }
     renderContent() {
         this.element.querySelector("h2").textContent = this.project.title;
-        this.element.querySelector("h3").textContent = this.project.people.toString();
+        this.element.querySelector("h3").textContent =
+            this.project.people.toString() + " persons assigned";
         this.element.querySelector("p").textContent = this.project.description;
     }
 }
@@ -141,8 +140,7 @@ class ProjectList extends Component {
         const listEl = document.getElementById(`${this.type}-projects-list`);
         listEl.innerHTML = "";
         for (const prjItem of this.assignedProjects) {
-            console.log("this.element.id = ", this.element.id);
-            new ProjectItem(this.element.id, prjItem);
+            new ProjectItem(this.element.querySelector("ul").id, prjItem);
         }
     }
 }

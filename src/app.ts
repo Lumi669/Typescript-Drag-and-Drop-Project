@@ -54,8 +54,6 @@ class ProjectState extends State<Project> {
             ProjectStatus.Active
         );
 
-        console.log("newProject = ", newProject);
-
         this.projects.push(newProject);
 
         //the magic happen here, when new project come, every listener
@@ -134,7 +132,6 @@ abstract class Component<T extends HTMLElement, U extends HTMLElement> {
 
         //get the concrete element out of the template content
         this.element = importedNode.firstElementChild as U;
-        console.log("app = ", this.element);
 
         // add an id
         if (newElementId) {
@@ -159,6 +156,7 @@ abstract class Component<T extends HTMLElement, U extends HTMLElement> {
 //ProjectItem Class
 class ProjectItem extends Component<HTMLUListElement, HTMLLIElement> {
     private project: Project;
+
     constructor(hostId: string, project: Project) {
         super("single-project", hostId, false, project.id);
         this.project = project;
@@ -169,7 +167,8 @@ class ProjectItem extends Component<HTMLUListElement, HTMLLIElement> {
     configure() {}
     renderContent() {
         this.element.querySelector("h2")!.textContent = this.project.title;
-        this.element.querySelector("h3")!.textContent = this.project.people.toString();
+        this.element.querySelector("h3")!.textContent =
+            this.project.people.toString() + " persons assigned";
         this.element.querySelector("p")!.textContent = this.project.description;
     }
 }
@@ -209,9 +208,7 @@ class ProjectList extends Component<HTMLTemplateElement, HTMLElement> {
         const listEl = document.getElementById(`${this.type}-projects-list`)! as HTMLUListElement;
         listEl.innerHTML = "";
         for (const prjItem of this.assignedProjects) {
-            console.log("this.element.id = ", this.element.id);
-
-            new ProjectItem(this.element.id, prjItem);
+            new ProjectItem(this.element.querySelector("ul")!.id, prjItem);
 
             // const listItem = document.createElement("Li");
             // listItem.textContent = prjItem.title;
