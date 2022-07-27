@@ -134,9 +134,14 @@ abstract class Component<T extends HTMLElement, U extends HTMLElement> {
 
         //get the concrete element out of the template content
         this.element = importedNode.firstElementChild as U;
+        console.log("app = ", this.element);
+
         // add an id
         if (newElementId) {
-            this.element.id = `${newElementId}-projects`;
+            console.log("newElementId = ", newElementId);
+            console.log("apple");
+
+            this.element.id = `${newElementId}`;
         }
         this.attach(insertAtStart);
     }
@@ -160,6 +165,7 @@ class ProjectItem extends Component<HTMLUListElement, HTMLLIElement> {
         this.configure();
         this.renderContent();
     }
+
     configure() {}
     renderContent() {
         this.element.querySelector("h2")!.textContent = this.project.title;
@@ -203,9 +209,13 @@ class ProjectList extends Component<HTMLTemplateElement, HTMLElement> {
         const listEl = document.getElementById(`${this.type}-projects-list`)! as HTMLUListElement;
         listEl.innerHTML = "";
         for (const prjItem of this.assignedProjects) {
-            const listItem = document.createElement("Li");
-            listItem.textContent = prjItem.title;
-            listEl.appendChild(listItem);
+            console.log("this.element.id = ", this.element.id);
+
+            new ProjectItem(this.element.id, prjItem);
+
+            // const listItem = document.createElement("Li");
+            // listItem.textContent = prjItem.title;
+            // listEl.appendChild(listItem);
         }
     }
 }

@@ -86,8 +86,11 @@ class Component {
         this.hostElement = document.getElementById(hostElementId);
         const importedNode = document.importNode(this.templateElement.content, true);
         this.element = importedNode.firstElementChild;
+        console.log("app = ", this.element);
         if (newElementId) {
-            this.element.id = `${newElementId}-projects`;
+            console.log("newElementId = ", newElementId);
+            console.log("apple");
+            this.element.id = `${newElementId}`;
         }
         this.attach(insertAtStart);
     }
@@ -138,9 +141,8 @@ class ProjectList extends Component {
         const listEl = document.getElementById(`${this.type}-projects-list`);
         listEl.innerHTML = "";
         for (const prjItem of this.assignedProjects) {
-            const listItem = document.createElement("Li");
-            listItem.textContent = prjItem.title;
-            listEl.appendChild(listItem);
+            console.log("this.element.id = ", this.element.id);
+            new ProjectItem(this.element.id, prjItem);
         }
     }
 }
