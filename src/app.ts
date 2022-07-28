@@ -67,7 +67,18 @@ class ProjectState extends State<Project> {
         );
 
         this.projects.push(newProject);
+        this.updateListeners();
+    }
 
+    removeProject(projectId: string, newStatus: ProjectStatus) {
+        const project = this.projects.find(prj => prj.id === projectId);
+        if (project && project.status !== newStatus) {
+            project.status = newStatus;
+            this.updateListeners();
+        }
+    }
+
+    private updateListeners() {
         //the magic happen here, when new project come, every listener
         //will be called with argument of projects, so update e.g assignedProjects
         for (const listenerFn of this.listeners) {
@@ -223,8 +234,13 @@ class ProjectList extends Component<HTMLTemplateElement, HTMLElement> implements
         }
     }
 
+    @Autobind
     dropHandler(event: DragEvent) {
-        console.log(event.dataTransfer!.getData("text/plain"));
+        const prjId = event.dataTransfer!.getData("text/plain");
+        projectState.removeProject(
+            prjId,
+            this.type === "active" ? ProjectStatus.Active : ProjectStatus.Finished
+        );
     }
 
     @Autobind
